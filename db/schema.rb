@@ -10,18 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_04_090242) do
+ActiveRecord::Schema.define(version: 2022_03_06_231054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "orders", force: :cascade do |t|
+    t.datetime "date_order"
+    t.bigint "product_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "active", default: true, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_orders_on_active"
+    t.index ["created_by_id"], name: "index_orders_on_created_by_id"
+    t.index ["deleted_at"], name: "index_orders_on_deleted_at"
+    t.index ["product_id"], name: "index_orders_on_product_id"
+    t.index ["updated_by_id"], name: "index_orders_on_updated_by_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "code_bar"
     t.float "price"
     t.bigint "user_id", null: false
+    t.boolean "active", default: true, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_products_on_active"
+    t.index ["created_by_id"], name: "index_products_on_created_by_id"
+    t.index ["deleted_at"], name: "index_products_on_deleted_at"
+    t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -47,5 +73,11 @@ ActiveRecord::Schema.define(version: 2022_03_04_090242) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "orders", "products"
+  add_foreign_key "orders", "users"
+  add_foreign_key "orders", "users", column: "created_by_id"
+  add_foreign_key "orders", "users", column: "updated_by_id"
   add_foreign_key "products", "users"
+  add_foreign_key "products", "users", column: "created_by_id"
+  add_foreign_key "products", "users", column: "updated_by_id"
 end
