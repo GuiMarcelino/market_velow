@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_06_232140) do
+ActiveRecord::Schema.define(version: 2022_03_07_232143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 2022_03_06_232140) do
     t.string "name"
     t.string "code_bar"
     t.float "price"
-    t.bigint "user_id", null: false
     t.boolean "active", default: true, null: false
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
@@ -49,7 +48,6 @@ ActiveRecord::Schema.define(version: 2022_03_06_232140) do
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
     t.index ["deleted_at"], name: "index_products_on_deleted_at"
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
-    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -78,7 +76,6 @@ ActiveRecord::Schema.define(version: 2022_03_06_232140) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "created_by_id"
   add_foreign_key "orders", "users", column: "updated_by_id"
-  add_foreign_key "products", "users"
   add_foreign_key "products", "users", column: "created_by_id"
   add_foreign_key "products", "users", column: "updated_by_id"
 end
